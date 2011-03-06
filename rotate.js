@@ -8,10 +8,10 @@ $(document).ready(function () {
   }
 
   function rotateImage(context, n, bound, degRotate, image, width, height) {
-    context.restore();
-    context.save();
-    context.translate(n * bound + (bound / 2), bound / 2);
-    context.rotate(n * degRotate * Math.PI / 180);
+//    context.restore();
+//    context.save();
+//    context.translate(n * bound + (bound / 2), bound / 2);
+//    context.rotate(n * degRotate * Math.PI / 180);
     context.drawImage(image, -width / 2, -height / 2);
   }
 
@@ -46,11 +46,12 @@ $(document).ready(function () {
     return { bound: bound, canvas: canvas, url: url };
   }
 
-//  drawRepeats('solid.png', 60, 60, 4);
-  img = $('<img src="image.png" width="60" height="60" />');
+//  img = $('<img src="image.png" width="60" height="60" />');
+  img = $('<img src="solid.png" width="60" height="60" />');
   $('#container').append('<div/>').append(img);
 
-  result = drawRepeats($('#container'), img.get(0), 36);
+  result = drawRepeats($('#container'), img.get(0), 1);
+//  result = drawRepeats($('#container'), img.get(0), 36);
 
   $('#offset').html(result.bound);
   $('#url').val(result.url);
