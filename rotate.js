@@ -1,8 +1,10 @@
 /*global $ */
 $(document).ready(function () {
 
+  var img, result;
+
   function getBound(imageWidth, imageHeight) {
-    return Math.sqrt(imageHeight * imageHeight + imageWidth * imageWidth);
+    return Math.ceil(Math.sqrt(imageHeight * imageHeight + imageWidth * imageWidth));
   }
 
   function rotateImage(context, n, bound, degRotate, image, width, height) {
@@ -13,37 +15,46 @@ $(document).ready(function () {
     context.drawImage(image, -width / 2, -height / 2);
   }
 
-  function createCanvas(width, height) {
+  function createCanvas(container, width, height) {
     var canvas = $('<canvas />');
     canvas.attr({ 'width': width, 'height': height});
     canvas.attr('id', 'canvas_2');
-    $('#container').append(canvas);
+    container.append(canvas);
 
     return canvas.get(0);
   }
 
-  function drawRepeats(imageSrcUrl, width, height, nFrames) {
-    var canvas, context, degRotate, i,
+  function drawRepeats(container, img, nFrames) {
+    var canvas, context, degRotate, i, url,
+      imageSrcUrl = img.src,
+      width = img.width,
+      height = img.height,
       originalImage = new Image(width, height),
       bound = getBound(width, height);
 
     degRotate = 360 / nFrames;
     originalImage.src = imageSrcUrl;
-
-    canvas = createCanvas(nFrames * bound, bound);
+    canvas = createCanvas(container, nFrames * bound, bound);
     context = canvas.getContext("2d");
 
     for (i = 0; i < nFrames; i += 1) {
       rotateImage(context, i, bound, degRotate, originalImage, width, height);
     }
 
-    return canvas;
+    url = canvas.toDataURL();
+
+    return { bound: bound, canvas: canvas, url: url };
   }
 
 //  drawRepeats('solid.png', 60, 60, 4);
-  drawRepeats('image.png', 60, 60, 36);
+  img = $('<img src="image.png" width="60" height="60" />');
+  $('#container').append('<div/>').append(img);
 
-//  url = canvas.toDataUrl('image/png');
+  result = drawRepeats($('#container'), img.get(0), 36);
 
+  $('#offset').html(result.bound);
+  $('#url').val(result.url);
+  var newImg = $('<img/>').attr({'src': result.url});
+  $('#container').append('<div/>').append(newImg);
 
 });
