@@ -1,0 +1,2 @@
+Simple use of HTML5 Canvas to take an image, rotate about its centre and generate a sprite with repeating images each rotated by the same amount.
+This sprite can then be animated as a CSS background to give a smooth rotation, e.g. of a png.
